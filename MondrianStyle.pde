@@ -1,27 +1,29 @@
-// First Assingment
-int windowWidth = 600;
-int windowHeight = 400;
+// Second Assignment
+// Very simple Processing program to generate every five seconds 
+// a new abstract art based on Piet Mondrian art using simple math.
+
+int windowWidth = 1280;
+int windowHeight = 720;
 float lineSize = 0;
 float colSize = 0;
-int now = second();
+int now = millis();
 
-color[] colors = new color[4];
+color[] colors = {#ffffff, #ff0000, #00ff00, #0000ff, #ffff00, #ff00ff, #00ffff, #000000};
 
 void mondrianStyle() {
-  background(#ffffff);
   for(int line = 0; line < windowHeight; line += lineSize + 2) {
-    lineSize = random(3, 150);
+    lineSize = random(3, windowWidth/3);
     for(int col = 0; col < windowWidth; col += colSize + 2) {
-      colSize = random(2, 200);
+      colSize = random(2, windowHeight/2);
       
-      color rectColor = colors[floor(random(0,4))];
+      color rectColor = colors[int(random(colors.length))];
       fill(rectColor);
       rect(col, line, colSize, lineSize);
       
       strokeWeight(2);
       strokeCap(PROJECT);
       stroke(#000000);
-      float x = col+colSize+1;
+      float x = col+colSize;
       float y = line+lineSize;
       line(0, y, windowWidth, y);
       line(x, line, x, y);
@@ -32,17 +34,12 @@ void mondrianStyle() {
 void setup() {
   size(windowWidth, windowHeight);
   background(#ffffff);
-  
-  colors[0] = color(255, 0, 0);
-  colors[1] = color(0, 255,0);
-  colors[2] = color(0, 0, 255);
-  colors[3] = color(255, 255, 255);
-  
-  mondrianStyle();
+  mondrianStyle(); // first call to avoid blank screen on the first seconds
 }
 
 void draw() {
-  if(millis() % 1500 == 0) {
+  if(millis() > now + 5000) {
     mondrianStyle();
+    now = millis();
   }
 }
